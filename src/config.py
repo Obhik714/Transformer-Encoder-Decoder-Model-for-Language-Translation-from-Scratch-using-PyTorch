@@ -1,0 +1,3 @@
+CHECKPOINT='Helsinki-NLP/opus-mt-en-es'
+MAX_INPUT_LEN=128
+MAX_OUTPUT_LEN=128
