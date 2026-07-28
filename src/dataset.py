@@ -16,6 +16,5 @@ df.columns=['en','es']
 df.to_csv('data/interim/spa.csv',index=None)
 raw_dataset=load_dataset('csv',data_files='data/interim/spa.csv')
 split=raw_dataset['train'].train_test_split(test_size=0.3,seed=42)
-print(split['train'][1])
 tokenized_ds=split.map(preprocess_function,batched=True,remove_columns=split['train'].column_names)
 tokenized_ds.save_to_disk("data/processed/tokenized_dataset")
