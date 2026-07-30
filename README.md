@@ -1,74 +1,66 @@
-# Data Project Template
+# Custom Encoder-Decoder Model
 
-<a target="_blank" href="https://datalumina.com/">
-    <img src="https://img.shields.io/badge/Datalumina-Project%20Template-2856f7" alt="Datalumina Project" />
-</a>
+A complete, from-scratch implementation of a sequence-to-sequence Encoder-Decoder architecture using PyTorch. This project leverages Hugging Face's `AutoTokenizer` for efficient and robust text tokenization.
 
-## Cookiecutter Data Science
-This project template is a simplified version of the [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org) template, created to suit the needs of Datalumina and made available as a GitHub template.
+## 🚀 Features
 
-## Adjusting .gitignore
+- **Custom PyTorch Architecture**: Full implementation of the Encoder and Decoder modules from the ground up.
+- **Hugging Face Integration**: Uses `AutoTokenizer` to cleanly handle vocabulary building, padding, and token management.
+- **Modular Design**: Clean separation of dataset processing, model architecture, training loops, and evaluation scripts.
+- **State Dict Management**: Easily save and load isolated model weights (`.pth` files) for inference.
 
-Ensure you adjust the `.gitignore` file according to your project needs. For example, since this is a template, the `/data/` folder is commented out and data will not be exlucded from source control:
+## 📂 Project Structure
 
-```plaintext
-# exclude data from source control by default
-# /data/
+```text
+├── data/                  # Raw and processed datasets
+├── models/                # Saved weights (e.g., encoder.pth, decoder.pth)
+├── reports/               # Training metrics and figures (loss plots)
+├── src/                   # Source code for the project
+│   ├── dataset.py         # Data loading and Tokenizer setup
+│   ├── architecture.py    # PyTorch Encoder and Decoder classes
+│   ├── plots.py           # Visualization and monitoring scripts
+│   └── predict.py         # Inference and evaluation routines
+├── pyproject.toml         # Project dependencies and environment configuration
+└── README.md              # Project documentation
 ```
 
-Typically, you want to exclude this folder if it contains either sensitive data that you do not want to add to version control or large files.
+## 🧠 Usage
 
-## Duplicating the .env File
-To set up your environment variables, you need to duplicate the `.env.example` file and rename it to `.env`. You can do this manually or using the following terminal command:
+### 1. Tokenization
+The project uses `AutoTokenizer` to seamlessly convert raw text into model-ready tensors:
 
+```python
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-es")
+tokens = tokenizer("Example sequence for the encoder", return_tensors="pt")
+```
+
+### 2. Loading the Model for Inference
+Load your trained state dictionaries into the custom architecture:
+
+```python
+import torch
+from src.architecture import Encoder, Decoder
+
+# Initialize the models
+encoder = Encoder(...) # Add your hyperparameters
+decoder = Decoder(...)
+
+# Load the saved state_dicts
+encoder.load_state_dict(torch.load('models/encoder.pth'))
+decoder.load_state_dict(torch.load('models/decoder.pth'))
+
+# Set to evaluation mode
+encoder.eval()
+decoder.eval()
+```
+
+### 3. Monitoring Training
+To generate loss visualizations (training vs. validation) and save them to the reports folder, execute the plotting module:
 ```bash
-cp .env.example .env # Linux, macOS, Git Bash, WSL
-copy .env.example .env # Windows Command Prompt
+python -m src.plots
 ```
 
-This command creates a copy of `.env.example` and names it `.env`, allowing you to configure your environment variables specific to your setup.
-
-
-## Project Organization
-
-```
-├── LICENSE            <- Open-source license if one is chosen
-├── README.md          <- The top-level README for developers using this project
-├── data
-│   ├── external       <- Data from third party sources
-│   ├── interim        <- Intermediate data that has been transformed
-│   ├── processed      <- The final, canonical data sets for modeling
-│   └── raw            <- The original, immutable data dump
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-└── src                         <- Source code for this project
-    │
-    ├── __init__.py             <- Makes src a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    │    
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    ├── plots.py                <- Code to create visualizations 
-    │
-    └── services                <- Service classes to connect with external platforms, tools, or APIs
-        └── __init__.py 
-```
+## 📈 Results
+Metrics and loss visualizations (such as `training_vs_validation_losses.png`) are automatically saved to `reports/figures/` during the training cycle to help monitor convergence and prevent overfitting.

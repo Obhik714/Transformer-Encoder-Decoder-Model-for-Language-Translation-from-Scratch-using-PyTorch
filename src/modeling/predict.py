@@ -34,6 +34,9 @@ device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 encoder.to(device)
 decoder.to(device)
 
+encoder.eval()
+decoder.eval()
+
 def translate(input_sentence):
   enc_input=tokenizer(input_sentence,return_tensors='pt').to(device)
   enc_output=encoder(enc_input['input_ids'],enc_input['attention_mask'])
