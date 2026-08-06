@@ -12,16 +12,20 @@ A complete, from-scratch implementation of a sequence-to-sequence Encoder-Decode
 ## 📂 Project Structure
 
 ```text
-├── data/                  # Raw and processed datasets
-├── models/                # Saved weights (e.g., encoder.pth, decoder.pth)
-├── reports/               # Training metrics and figures (loss plots)
-├── src/                   # Source code for the project
-│   ├── dataset.py         # Data loading and Tokenizer setup
-│   ├── architecture.py    # PyTorch Encoder and Decoder classes
-│   ├── plots.py           # Visualization and monitoring scripts
-│   └── predict.py         # Inference and evaluation routines
-├── pyproject.toml         # Project dependencies and environment configuration
-└── README.md              # Project documentation
+├── data/                    # Raw and processed datasets
+├── models/                  # Saved weights (e.g., encoder.pth, decoder.pth)
+├── reports/                 # Training metrics and figures (loss plots)
+├── src/                     # Source code for the project
+│   ├── modeling/            # Core model training and inference
+│   │   ├── __init__.py
+│   │   ├── architecture.py  # PyTorch Encoder and Decoder classes
+│   │   ├── predict.py       # Evaluation and model inference
+│   │   └── train.py         # Alignment training loop
+│   ├── dataset.py           # Data loading and Tokenizer setup
+│   ├── plots.py             # Visualization and monitoring scripts
+│   └── config.py            # Model configuration and hyperparameters
+├── pyproject.toml           # Project dependencies and environment configuration
+└── README.md                # Project documentation
 ```
 
 ## 🧠 Usage
